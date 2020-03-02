@@ -24,6 +24,7 @@ cmake ../hdf5-%version%^
  -DHDF5_BUILD_CPP_LIB=OFF^
  -DHDF5_BUILD_HL_LIB=OFF^
  -DHDF5_BUILD_TOOLS=OFF^
+ -DHDF5_ENABLE_DEPRECATED_SYMBOLS=OFF^
  -DCMAKE_DEBUG_POSTFIX=d
 ;
 ::https://stackoverflow.com/questions/34050155/symbol-not-found-linking-to-hdf-library
@@ -31,6 +32,11 @@ cmake --build . --config Release --target ALL_BUILD
 cmake --build . --config Release --target INSTALL
 cmake --build . --config Debug --target ALL_BUILD
 cmake --build . --config Debug --target INSTALL
+::
+:: Add
+:: #define H5_BUILT_AS_DYNAMIC_LIB 1
+:: to H5pubconf.h
+::
 pause
 exit /b
 

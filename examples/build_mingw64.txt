@@ -1,0 +1,4 @@
+g++ eigen.cpp
+g++ ffmpeg.cpp -lavcodec -lavformat -lavutil
+g++ glog.cpp -lglog
+g++ hdf5.cpp -lhdf5
