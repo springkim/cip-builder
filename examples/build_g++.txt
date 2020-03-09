@@ -1,0 +1,4 @@
+g++ eigen.cpp
+g++ ffmpeg.cpp -lavcodec -lavformat -lavutil -lavfilter -lavdevice -lswscale -lswresample -lpthread
+g++ glog.cpp -lglog
+g++ hdf5.cpp  -l:hdf5/serial/libhdf5.a -lpthread -lz -ldl -lsz

@@ -1,7 +1,12 @@
 
 #include <stdlib.h>
 #include <math.h>
-#include <hdf5.h>
+
+#if defined(_WIN32) || defined(_WIN64)
+#include<hdf5.h>
+#elif defined(__linux__)
+#include <hdf5/serial/hdf5.h>
+#endif
 
 int main(void) {
 	H5T_NATIVE_LONG_g;
