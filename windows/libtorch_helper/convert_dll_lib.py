@@ -10,6 +10,8 @@ import filecmp
 2. 의존성을 파악한다.( 1번에 포함되는 dll 중에서)
 3. 의존성 트리를 구성한다.
 
+4. 의존성을 파악한다( 1번에 포함되지 않는 dll -> shared dll, API comfortable)
+
 4. 이름을 변경한다.
 """
 
@@ -56,8 +58,9 @@ def fild_dll_dependencies(dll_list):
 def main():
     r_dll = glob.glob("lib-release/*.dll")
     d_dll = glob.glob("lib-debug/*.dll")
-    dlls = intersection(d_dll, r_dll)
-    dlls = list(filter(lambda x: not filecmp.cmp(*x), dlls))
+    dlls_all = intersection(d_dll, r_dll)
+    dlls = list(filter(lambda x: not filecmp.cmp(*x), dlls_all))
+    dlls_shared = list(filter(lambda x: filecmp.cmp(*x), dlls_all))
 
     dlls_dependencies = fild_dll_dependencies(dlls)
 
@@ -68,6 +71,8 @@ def main():
                 buf = f.read()
                 for dpd in dlls_dependencies[i]:
                     buf = buf.replace(str.encode(dpd), str.encode(replace_dll(dpd, alphabet[j])))
+                for dpd in dlls_shared[i]:
+                    buf = buf.replace(str.encode(dpd), str.encode(replace_dll(dpd, 'S')))
                 f.seek(0)
                 f.write(buf)
             os.rename(e[j], replace_dll(e[j], alphabet[j]))
@@ -81,6 +86,9 @@ def main():
                     f.seek(0)
                     f.write(newbuf)
                 os.rename(libname, replace_dll(libname, alphabet[j]))
+    for e in dlls_shared:
+        for i in range(2):
+            os.rename(e[i], replace_dll(e[i], 'S'))
 
 
 if __name__ == "__main__":
